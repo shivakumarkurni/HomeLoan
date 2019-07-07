@@ -14,7 +14,7 @@ public interface ManagerService {
 
 	public String createManager(Manager manager);
 
-	public String approvingOrRejectingLoan(int CustomerId);
+	public String approvingOrRejectingLoan(int CustomerId,String role);
 
 	//public List<Loan> loanPendingList();
 

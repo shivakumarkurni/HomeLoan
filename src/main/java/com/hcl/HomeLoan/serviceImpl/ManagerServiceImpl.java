@@ -44,7 +44,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@SuppressWarnings("unused")
 	@Override
-	public String approvingOrRejectingLoan(int customerId) {
+	public String approvingOrRejectingLoan(int customerId, String role) {
 
 		List<Loan> loans = new ArrayList<Loan>();
 		Loan loan = new Loan();
@@ -53,22 +53,27 @@ public class ManagerServiceImpl implements ManagerService {
 		loan = loanRepository.findByCustomer(customer);
 		loans.add(loan);
 
-		if (loan != null) {
+		if (role.equals("manager")) {
 
-			loan = loanRepository.findLoanByAccountNo(loan.getAccountNo());
+			if (loan != null) {
 
-			if (loans.size() > 1) {
-				return "You are already having an account So you cant apply for another loan";
-			} else if (loan != null) {
-				customer = customerRepository.findCustomerByCustomerId(customerId);
-				if ((customer.getAge() >= 24 && customer.getAge() <= 60) && loan.getCreditScore() >= 60) {
-					loan.setLoanStatus("approved");
-					loanRepository.save(loan);
+				loan = loanRepository.findLoanByAccountNo(loan.getAccountNo());
 
-					return "Congratulations Your Loan Has Got Approved";
+				if (loans.size() > 1) {
+					return "You are already having an account So you cant apply for another loan";
+				} else if (loan != null) {
+					customer = customerRepository.findCustomerByCustomerId(customerId);
+					if ((customer.getAge() >= 24 && customer.getAge() <= 60) && loan.getCreditScore() >= 60) {
+						loan.setLoanStatus("approved");
+						loanRepository.save(loan);
+
+						return "Congratulations Your Loan Has Got Approved";
+					}
 				}
-			}
 
+			}
+		} else {
+			return "You dont have the access to approve loans ";
 		}
 
 		return null;

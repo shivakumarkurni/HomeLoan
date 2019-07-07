@@ -3,10 +3,12 @@ package com.hcl.HomeLoan.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hcl.HomeLoan.model.Manager;
@@ -17,6 +19,7 @@ public class ManagerController {
 
 	@Autowired
 	ManagerService managerService;
+	
 
 	@PostMapping("/managers")
 	public String createManager(@RequestBody Manager manager) {
@@ -30,10 +33,12 @@ public class ManagerController {
 
 	}
 
-	@GetMapping("/loans/customer/{customerId}")
-	public String loanApproving(@PathVariable int customerId) {
+	@GetMapping("/loans/customer/{customerId}/")
+	public String loanApproving(@PathVariable int customerId, @RequestHeader(value="role") String role) {
+		
+		 
 
-		return managerService.approvingOrRejectingLoan(customerId);
+		return managerService.approvingOrRejectingLoan(customerId,role);
 	}
 
 }
